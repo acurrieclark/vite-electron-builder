@@ -2,7 +2,19 @@
 
 ---
 
-# Vite Electron Builder Boilerplate
+# Vite Electron Builder Boilerplate with SvelteKit (Experimental)
+
+## Changes
+
+This repo is a fork which attempts to use Sveltekit instead of Vue. While it is successful, there are a number of comprimises made:
+
+1. I couldn't find a way for Sveltekit's `src` directory to be anywhere other than in the `cwd` when `npm run watch` is called. The result is that I moved it and all of SvelteKit's configuration to the root directory. This is far from ideal.
+2. A number of the scripts are adjusted accordingly, but the tests run unchanged.
+3. My understanding is that in order to run Sveltekit as an electron app, everything needs to be prerendered. When doing this, any imports from `#preload` will be null, and can cause errors. I have added simple checks here.
+
+The repo works fine as a starter, but I would be grateful for any feedback. In particular, it would be great to move the `renderer` source back to the appropriate `package` directory.
+
+---
 
 This is a template for secure electron applications. Written following the latest safety requirements, recommendations
 and best practices.
@@ -55,7 +67,7 @@ Vite provides many useful features, such as: `TypeScript`, `TSX/JSX`, `CSS/JSON 
 - Code formatting rules follow the latest TypeScript recommendations and best practices thanks
   to [@typescript-eslint/eslint-plugin](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin).
 
-> [Guide to disable typescript and remove dependencies](https://github.com/cawa-93/vite-electron-builder/discussions/339) 
+> [Guide to disable typescript and remove dependencies](https://github.com/cawa-93/vite-electron-builder/discussions/339)
 
 ### Vue [![Vue version](https://img.shields.io/github/package-json/dependency-version/cawa-93/vite-electron-builder/dev/vue?label=%20&)][vue] (optional)
 
@@ -80,11 +92,11 @@ Vite provides many useful features, such as: `TypeScript`, `TSX/JSX`, `CSS/JSON 
 
 ### Publishing
 
-- Each time you push changes to the `main` branch, the [`release`](.github/workflows/release.yml) workflow starts, which creates a new draft release. For each next commit will be created and replaced artifacts. That way you will always have draft with latest artifacts, and the release can be published once it is ready. 
+- Each time you push changes to the `main` branch, the [`release`](.github/workflows/release.yml) workflow starts, which creates a new draft release. For each next commit will be created and replaced artifacts. That way you will always have draft with latest artifacts, and the release can be published once it is ready.
   - Code signing supported. See [`release` workflow](.github/workflows/release.yml).
   - **Auto-update is supported**. After the release is published, all client applications will download the new version
   and install updates silently.
-  
+
 > **Note**:
 > This template **configured only for GitHub public repository**, but electron-builder also supports other update distribution servers. Find more in [electron-builder docs](https://www.electron.build/configuration/publish).
 
@@ -255,7 +267,7 @@ When running the build script, the environment variables are loaded from the fol
 .env.[mode].local   # only loaded in specified env mode, ignored by git
 ```
 
-> **Warning**: 
+> **Warning**:
 > To prevent accidentally leaking env variables to the client, only variables prefixed with `VITE_` are exposed to your
 Vite-processed code.
 
